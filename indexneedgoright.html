@@ -6,20 +6,27 @@
   <title>My Portfolio</title>
   <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- GSAP & Lenis -->
+  <!-- GSAP 动画库 -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+  <!-- 平滑滚动 -->
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
 
   <style>
+    /* 页面背景色 */
     body {
       background-color: #FFFFFF;
       margin: 0;
       font-family: Arial, sans-serif;
     }
 
-    .hero-title span { color: #FA5151; }
+    /* 点缀色字体 */
+    .hero-title span {
+      color: #FA5151;
+    }
 
+    /* 底部版权区域 */
     .footer {
       display: flex;
       justify-content: space-between;
@@ -48,6 +55,7 @@
       transform: scale(1.1);
     }
 
+    /* 介绍浮动动画 */
     .intro {
       margin: 40px auto;
       text-align: center;
@@ -63,6 +71,7 @@
       100% { transform: translateY(0px); opacity: 0.8; }
     }
 
+    /* 打字机 */
     .typing-text {
       display: inline-block;
       border-right: 2px solid #FA5151;
@@ -76,30 +85,26 @@
       25%, 75% { border-color: transparent; }
     }
 
-    .works {
-      position: relative;
-      min-height: 100vh;
+    /* work-items */
+    .work-container {
       display: flex;
       align-items: center;
-      padding: 0 80px;
+      gap: 30px; /* work-item 和标题之间间距 */
+      margin: 50px auto;
+      width: max-content;
     }
 
-    .works-list {
+    .works {
       display: flex;
       flex-direction: column;
-      gap: 28px;
-      position: absolute;
-      left: 80px;
-      top: 50%;
-      transform: translateY(-50%);
+      gap: 12px;
     }
 
     .work-item {
       position: relative;
       font-size: 24px;
-      padding-left: 24px;
+      padding-left: 25px;
       cursor: pointer;
-      white-space: nowrap;
     }
 
     .work-item::before {
@@ -107,12 +112,12 @@
       position: absolute;
       left: 0;
       top: 50%;
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
+      width: 14px;
+      height: 14px;
       background-color: #FA5151;
+      border-radius: 4px;
       transform: translateY(-50%) scale(0);
-      transition: transform 0.25s ease;
+      transition: transform 0.2s ease;
     }
 
     .work-item:hover::before,
@@ -120,65 +125,17 @@
       transform: translateY(-50%) scale(1);
     }
 
-    .work-item span { margin-left: 4px; }
-
-    .signature {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%) translateY(-20px);
-      font-size: 120px;
+    /* 新标题样式 */
+    .work-title {
+      font-size: 28px;
       font-weight: bold;
-      color: #FA5151;
-      opacity: 0.15;
-      user-select: none;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    /* 新增：Yun Wu 下方的图片 */
-    .signature-image {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, 80px); /* Yun Wu 下方间距可调 */
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      pointer-events: none;
-    }
-
-    @media (max-width: 868px) {
-      .works { padding: 0 40px; }
-      .works-list {
-        position: static;
-        transform: none;
-        margin-bottom: 60px;
-        align-items: center;
-      }
-      .signature {
-        position: static;
-        transform: translateY(-20px);
-        font-size: 80px;
-        margin: 0 auto;
-      }
-      .signature-image {
-        position: static;
-        transform: none;
-        margin: 40px auto 0;
-      }
-      .works {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+      color: #333333;
     }
   </style>
 </head>
 
 <body>
+
   <div class="cursor"></div>
 
   <header class="hero">
@@ -190,20 +147,17 @@
   </header>
 
   <section class="intro fade-in">
-    <p class="typing-text" id="introText">Hi Yun 专注于视觉叙事、创意影像和艺术表达。</p>
+    <p class="typing-text" id="introText">Hi I'm Yun 专注于视觉叙事、创意影像和艺术表达。</p>
   </section>
 
-  <section class="works">
-    <div class="works-list">
-      <div class="work-item fade-in"><span>Home</span></div>
-      <div class="work-item fade-in"><span>About</span></div>
-      <div class="work-item fade-in"><span>Project Flow</span></div>
+  <!-- work-items + 新标题 -->
+  <section class="work-container">
+    <div class="works">
+      <div class="work-item fade-in">Home</div>
+      <div class="work-item fade-in">About</div>
+      <div class="work-item fade-in">Project Flow</div>
     </div>
-
-    <div class="signature">Yun Wu</div>
-
-    <!-- Yun Wu 正下方插入的图片（随时换成你自己的链接） -->
-    <img src="assets/img/weird line.png" alt="Yun Wu Work" class="signature-image">
+    <div class="work-title">Yun Wu</div>
   </section>
 
   <footer class="footer fade-in">
@@ -216,10 +170,12 @@
 
   <script src="assets/js/app.js"></script>
   <script>
+    // 打字机效果
     const textEl = document.getElementById("introText");
     const fullText = textEl.textContent;
     textEl.textContent = "";
     let index = 0;
+
     function typeWriter() {
       if (index < fullText.length) {
         textEl.textContent += fullText.charAt(index);
@@ -229,5 +185,6 @@
     }
     window.onload = () => typeWriter();
   </script>
+
 </body>
 </html>

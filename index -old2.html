@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的作品集</title>
+  
+  <!-- ====== CSS 样式 ====== -->
+  <style>
+    /* 页面整体样式 */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #ffecd2);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #fff;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 自定义鼠标（小圆点） */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ff3c78;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, background 0.3s ease;
+      z-index: 9999;
+    }
+
+    /* 打字机文字效果 */
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid #fff;
+      white-space: nowrap;
+      width: 0;
+      animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite alternate;
+      font-size: 2rem;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 22ch; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* 漂浮元素 */
+    .floating-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      animation: floatAnim 4s ease-in-out infinite;
+    }
+
+    @keyframes floatAnim {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+      50% { transform: translate(-50%, -50%) translateY(-15px); }
+    }
+
+    /* 页面其他内容示例 */
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    main {
+      margin-top: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 自定义鼠标 -->
+  <div class="custom-cursor"></div>
+
+  <!-- 打字机文字 -->
+  <h1 class="typewriter">欢迎来到我的作品集</h1>
+
+  <!-- 漂浮元素 -->
+  <div class="floating-box">漂浮元素</div>
+
+  <!-- 页面内容示例 -->
+  <header>
+    <h2>作品集</h2>
+  </header>
+  <main>
+    <p>这里可以放图片和视频展示你的作品</p>
+  </main>
+  <footer>
+    <p>版权所有 © 2025</p>
+  </footer>
+
+  <!-- ====== JavaScript ====== -->
+  <script>
+    // 鼠标跟随小圆点
+    const cursor = document.querySelector('.custom-cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
+
+    // 鼠标点击粒子效果
+    document.addEventListener('click', e => {
+      const particle = document.createElement('div');
+      particle.style.position = 'fixed';
+      particle.style.width = '8px';
+      particle.style.height = '8px';
+      particle.style.borderRadius = '50%';
+      particle.style.background = '#fff';
+      particle.style.left = e.clientX + 'px';
+      particle.style.top = e.clientY + 'px';
+      particle.style.pointerEvents = 'none';
+      particle.style.zIndex = 9999;
+      document.body.appendChild(particle);
+
+      let size = 8;
+      const interval = setInterval(() => {
+        size += 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.opacity = parseFloat(particle.style.opacity || 1) - 0.05;
+        if (parseFloat(particle.style.opacity) <= 0) {
+          particle.remove();
+          clearInterval(interval);
+        }
+      }, 16);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Flow – Yun Wu</title>
+  <style>
+    :root { --red: #FA5151; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background:#fff; color:#000;
+      overflow-x:hidden;
+      opacity:0; transition:opacity 1s ease;
+    }
+    body.loaded { opacity:1; }
+
+    /* 红色光标 */
+    .cursor {
+      position:fixed; width:11px; height:11px; background:var(--red);
+      border-radius:50%; pointer-events:none; z-index:9999;
+      transform:translate(-50%,-50%); transition:transform .08s ease;
+    }
+
+    /* 顶部保持不变 */
+    header { position:fixed; top:0; left:0; width:100%; padding:40px 60px; display:flex; justify-content:space-between; align-items:flex-start; z-index:100; }
+    .nav-left a { display:block; margin-bottom:14px; font-size:18px; text-decoration:none; color:#000; padding-left:26px; position:relative; transition:color .3s; }
+    .nav-left a:hover { color:var(--red); }
+    .nav-left a:nth-child(3)::before { content:""; position:absolute; left:0; top:50%; transform:translateY(-50%); width:12px; height:12px; background:var(--red); border-radius:3px; }
+    .logo { position:absolute; left:50%; top:50px; transform:translateX(-50%); font-size:72px; font-weight:900; color:var(--red); letter-spacing:-0.04em; }
+    .social a { display:block; width:30px; height:30px; margin-bottom:24px; color:var(--red); }
+    .social a svg { stroke:currentColor; stroke-width:2.3; }
+
+    /* 瀑布流容器 */
+    .masonry {
+      column-count: 2;
+      column-gap: 40px;
+      padding: 220px 60px 160px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    /* 每一个项目 */
+    .project {
+      break-inside: avoid;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      cursor: pointer;
+      display: inline-block;
+      width: 100%;
+      opacity: 0;                    /* 初始隐藏 */
+      transform: translateY(80px);   /* 初始下移 */
+      transition: all 1.1s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .project.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project img {
+      width: 100%; height: auto; display: block;
+      transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .project:hover img {
+      transform: scale(1.09);
+    }
+
+    /* 悬浮遮罩动画更丝滑 */
+    .project .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,0.82) 0%, transparent 38%);
+      opacity: 0;
+      transition: opacity .8s ease;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 40px 38px;
+    }
+    .project:hover .overlay { opacity: 1; }
+
+    .project h3 {
+      color: #fff; font-size: 27px; font-weight: 600;
+      transform: translateY(24px);
+      transition: transform .8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .project p {
+      color: #fff; font-size: 16px; opacity: 0.9; margin-top: 8px;
+      transform: translateY(24px);
+      transition: transform .8s cubic-bezier(0.19, 1, 0.22, 1) .1s;
+    }
+    .project:hover h3,
+    .project:hover p { transform: translateY(0); }
+
+    footer { position:fixed; bottom:40px; left:60px; color:#aaa; font-size:14px; z-index:100; }
+
+    @media (max-width:900px) {
+      header { padding:30px; flex-direction:column; }
+      .logo { position:static; transform:none; margin:20px 0 40px; font-size:56px; }
+      .social { display:flex; gap:28px; margin-top:20px; }
+      .masonry { padding:180px 30px 120px; column-gap:30px; }
+      .project { margin-bottom:32px; border-radius:18px; }
+      .project h3 { font-size:24px; }
+    }
+    @media (max-width:600px) {
+      .masonry { column-count:1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor"></div>
+
+  <header>
+    <div class="nav-left">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="works.html">Project Flow</a>
+    </div>
+    <h1 class="logo">Yun Wu</h1>
+    <div class="social">
+      <a href="mailto:yunwustudio@gmail.com"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+      <a href="https://instagram.com/yun.wu.studio" target="_blank"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://www.linkedin.com/in/yun-wu-" target="_blank"><svg viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </header>
+
+  <div class="masonry" id="masonry">
+    <!-- 替换成你的作品图即可 -->
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1558591993-43b4ee9202b1?w=1200" alt=""><div class="overlay"><h3>Brand Identity for Café Luna</h3><p>Visual Identity · Packaging · 2025</p></div></a>
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1558655146-9f40138ed1cb?w=1200&h=1600" alt=""><div class="overlay"><h3>Seattle Fog Editorial</h3><p>Photography · Art Direction · 2025</p></div></a>
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1502920513513-32b46f7189f9?w=1200&h=1400" alt=""><div class="overlay"><h3>Nike Air Campaign</h3><p>Motion · Campaign · 2024</p></div></a>
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=1800" alt=""><div class="overlay"><h3>Minimal Living Poster Series</h3><p>Print · Typography · 2024</p></div></a>
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1519389950476-2d1966f9c856?w=1200&h=1500" alt=""><div class="overlay"><h3>Tech Conference 2025</h3><p>Branding · Web · Motion</p></div></a>
+    <a href="#" class="project"><img src="https://images.unsplash.com/photo-1551489186-cf8726f514f8?w=1200&h=1700" alt=""><div class="overlay"><h3>Analog Film Diary</h3><p>Personal Photography · 2025</p></div></a>
+  </div>
+
+  <footer>2025 Yun Wu</footer>
+
+  <script>
+    // 光标
+    document.addEventListener('mousemove', e => {
+      document.querySelector('.cursor').style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
+
+    // 页面加载完成 + 瀑布流逐个飞入动画
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+
+      const projects = document.querySelectorAll('.project');
+      projects.forEach((project, i) => {
+        setTimeout(() => {
+          project.classList.add('visible');
+        }, i * 160); // 每张图延迟160ms飞入，丝滑到爆
+      });
+    });
+  </script>
+</body>
+</html>

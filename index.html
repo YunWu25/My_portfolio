@@ -1,89 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yun Wu Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap"
-      rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              coral: '#ff6b6b',
-              offwhite: '#f9f9f9',
-              darkgray: '#333333',
-            },
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            }
-          }
-        }
+  <!-- GSAP & Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .hero-title span { color: #FA5151; }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      background-color: #FFFFFF;
+    }
+
+    .footer-left,
+    .footer-right a {
+      color: #DDDDDD;
+      font-size: 40px;
+      margin: 0;
+      text-decoration: none;
+    }
+
+    .footer-right a {
+      margin-left: 10px;
+      margin-right: 10px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .footer-right a:hover {
+      color: #FA5151;
+      transform: scale(1.1);
+    }
+
+    .intro {
+      margin: 40px auto;
+      text-align: center;
+      font-size: 18px;
+      color: #7B7B7B;
+      animation: floatFade 4s ease-in-out infinite alternate;
+      max-width: 800px;
+    }
+
+    @keyframes floatFade {
+      0% { transform: translateY(0px); opacity: 0.8; }
+      50% { transform: translateY(-10px); opacity: 1; }
+      100% { transform: translateY(0px); opacity: 0.8; }
+    }
+
+    .typing-text {
+      display: inline-block;
+      border-right: 2px solid #FA5151;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { border-color: #FA5151; }
+      25%, 75% { border-color: transparent; }
+    }
+
+    .works {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+    }
+
+    .works-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      position: absolute;
+      left: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .work-item {
+      position: relative;
+      font-size: 24px;
+      padding-left: 24px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .work-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background-color: #FA5151;
+      transform: translateY(-50%) scale(0);
+      transition: transform 0.25s ease;
+    }
+
+    .work-item:hover::before,
+    .work-item.active::before {
+      transform: translateY(-50%) scale(1);
+    }
+
+    .work-item span { margin-left: 4px; }
+
+    .signature {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) translateY(-20px);
+      font-size: 120px;
+      font-weight: bold;
+      color: #FA5151;
+      opacity: 0.15;
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* 新增：Yun Wu 下方的图片 */
+    .signature-image {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 80px); /* Yun Wu 下方间距可调 */
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 868px) {
+      .works { padding: 0 40px; }
+      .works-list {
+        position: static;
+        transform: none;
+        margin-bottom: 60px;
+        align-items: center;
       }
-    </script>
-    <style>
-      body {
-        background-color: #ffffff;
-        overflow: hidden;
-        /* Managed by React app */
+      .signature {
+        position: static;
+        transform: translateY(-20px);
+        font-size: 80px;
+        margin: 0 auto;
       }
-
-      /* Custom scrollbar for internal content */
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
+      .signature-image {
+        position: static;
+        transform: none;
+        margin: 40px auto 0;
       }
-
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f1f1;
+      .works {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
+    }
+  </style>
+</head>
 
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #ff6b6b;
-        border-radius: 3px;
+<body>
+  <div class="cursor"></div>
+
+  <header class="hero">
+    <h1 class="hero-title">
+      <span>Yun</span>
+      <span>DESIGN</span>
+      <span>PORTFOLIO</span>
+    </h1>
+  </header>
+
+  <section class="intro fade-in">
+    <p class="typing-text" id="introText">Hi Yun 专注于视觉叙事、创意影像和艺术表达。</p>
+  </section>
+
+  <section class="works">
+    <div class="works-list">
+      <div class="work-item fade-in"><span>Home</span></div>
+      <div class="work-item fade-in"><span>About</span></div>
+      <div class="work-item fade-in"><span>Project Flow</span></div>
+    </div>
+
+    <div class="signature">Yun Wu</div>
+
+    <!-- Yun Wu 正下方插入的图片（随时换成你自己的链接） -->
+    <img src="assets/img/weird line.png" alt="Yun Wu Work" class="signature-image">
+  </section>
+
+  <footer class="footer fade-in">
+    <p class="footer-left">© 2025 My Portfolio</p>
+    <p class="footer-right">
+      <a href="mailto:youremail@example.com">EMAIL</a> | 
+      <a href="https://www.instagram.com/yourprofile" target="_blank">INS</a>
+    </p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    const textEl = document.getElementById("introText");
+    const fullText = textEl.textContent;
+    textEl.textContent = "";
+    let index = 0;
+    function typeWriter() {
+      if (index < fullText.length) {
+        textEl.textContent += fullText.charAt(index);
+        index++;
+        setTimeout(typeWriter, 50);
       }
-
-      /* Blinking cursor animation */
-      @keyframes blink {
-
-        0%,
-        49% {
-          opacity: 1;
-        }
-
-        50%,
-        100% {
-          opacity: 0;
-        }
-      }
-
-      .animate-blink {
-        animation: blink 1s infinite;
-      }
-    </style>
-
-    <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
-  }
-}
-</script>
-    <script type="module" crossorigin src="./assets/index-DAcCuQ-U.js"></script>
-  </head>
-
-  <body>
-    <div id="root"></div>
-  </body>
-
+    }
+    window.onload = () => typeWriter();
+  </script>
+</body>
 </html>

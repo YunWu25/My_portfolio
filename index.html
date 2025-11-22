@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yun Wu Portfolio</title>
+
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+
 <style>
 :root {--red:#FA5151;--gray:#7B7B7B;}
 * {margin:0;padding:0;box-sizing:border-box;}
@@ -18,8 +21,8 @@ body {font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background
 @keyframes blink {0%,50%,100%{border-color:var(--red);}25%,75%{border-color:transparent;}}
 
 /* 第二屏 */
-#page2 {opacity:0; pointer-events:none; transition:opacity 1s ease;}
-#page2.visible {opacity:1; pointer-events:auto;}
+#page2 {display:none;opacity:0;transition:opacity 1s ease;}
+#page2.visible {display:block;opacity:1;}
 
 .cursor {position:fixed;width:13px;height:13px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;}
 
@@ -28,7 +31,7 @@ header {padding:40px 100px;position:fixed;top:0;left:0;width:100%;display:flex;j
 .nav-left a {display:block;margin-bottom:22px;font-size:24px;color:#181818;font-weight:400;padding-left:38px;position:relative;text-decoration:none;transition:.4s;letter-spacing:-0.8px;}
 .nav-left a:hover {color:var(--red);transform:translateX(8px);}
 .nav-left a:first-child::before {content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:18px;height:18px;background:var(--red);border-radius:5px;}
-.logo {position:absolute;left:50%;top:52px;transform:translateX(-50%);font-size:82px;font-weight:900;color:var(--red);letter-spacing:-0.06em;}
+.logo {position:absolute;left:50%;top:38px;transform:translateX(-50%);font-size:82px;font-weight:700;color:var(--red);letter-spacing:-0.06em;}
 
 /* ICONs */
 .social {
@@ -40,31 +43,36 @@ header {padding:40px 100px;position:fixed;top:0;left:0;width:100%;display:flex;j
   align-items: center;
   z-index: 100;
 }
+
 .social a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-  color: var(--red);
-  background: none;
-  font-size: 28px;
+  color: var(--red);   /* 保留红色或者换成线性颜色 */
+  background: none;    /* 去掉背景 */
+  border-radius: 0;    /* 去掉圆角 */
+  font-size: 28px;     /* 调整ICON大小 */
   opacity: 0;
   transform: translateY(-20px) scale(0.8);
   transition: all 0.4s ease;
+  box-shadow: none;    /* 去掉阴影 */
 }
+
 .social a:hover {
   transform: translateY(-3px) scale(1.1);
+  color: var(--red);   /* hover 颜色效果 */
 }
 
 /* 曲线 */
-.curve {position:absolute;top:142px;left:50%;transform:translateX(-50%);width:42%;max-width:580px;pointer-events:none;}
+.curve {position:absolute;top:140px;left:50%;transform:translateX(-50%);width:42%;max-width:400px;pointer-events:none;}
 
 /* 卡片 */
 .card {
-  position:absolute;bottom:40px;left:50%;
+  position:absolute;bottom:100px;left:50%;
   transform:translateX(-50%) translateY(50px);
   opacity:0;
-  width:94vw; max-width:1850px;
+  width:94vw;max-width:1100px;
   background:#fdfdfd;border:1px solid #DDDDDD;
   border-radius:42px;padding:92px 140px;
   box-shadow:0 45px 140px rgba(0,0,0,.12);
@@ -82,8 +90,11 @@ header {padding:40px 100px;position:fixed;top:0;left:0;width:100%;display:flex;j
   line-height: 1.6;
   max-width: 1180px;
   margin: 0 auto;
-  transform: translateX(260px);
+
+  /* 新增：整体往左偏移 40px，可根据需要调整 */
+  transform: translateX(100px);
 }
+
 .row {display:contents;}
 .label, .value, .location, .value div {color:#7B7B7B;font-weight:400;}
 .label a, .value a {color:#7B7B7B;font-weight:400;transition:.35s;}
@@ -91,7 +102,7 @@ header {padding:40px 100px;position:fixed;top:0;left:0;width:100%;display:flex;j
 .value a.view {color:var(--red);font-weight:500;}
 .time {justify-self:start !important;color:var(--red);font-weight:400;margin-top:10px;}
 
-/* footer */
+/* footer 修改：和导航栏 Home 一样大，颜色灰色 */
 footer {
   position:absolute;
   bottom:48px;
@@ -107,7 +118,7 @@ footer {
 
 <!-- 第一屏 -->
 <div id="page1">
-  <h1 class="hero-title"><span>Yun</span><span>DESIGN</span><span>PORTFOLIO</span></h1>
+  <h1 class="hero-title"><span>YUN</span><span>DESIGN</span><span>PORTFOLIO</span></h1>
   <p class="typing-text" id="introText">Hi Yun 专注于视觉叙事、创意影像和艺术表达。</p>
 </div>
 
@@ -144,32 +155,23 @@ footer {
 </div>
 
 <script>
+/* 打字机效果 */
 const textEl = document.getElementById("introText");
 const fullText = textEl.textContent;
 textEl.textContent = "";
 let index = 0;
-let typingTimeout;
-let secondScreenShown = false;
 
-// 打字机动画
-function typeWriter() {
-  if (index < fullText.length) {
+function typeWriter(){
+  if(index < fullText.length){
     textEl.textContent += fullText.charAt(index);
     index++;
-    typingTimeout = setTimeout(typeWriter, 50);
+    setTimeout(typeWriter,50);
   } else {
     setTimeout(showSecondScreen, 1500);
   }
 }
 
-// 显示第二屏
 function showSecondScreen() {
-  if (secondScreenShown) return;
-  secondScreenShown = true;
-
-  clearTimeout(typingTimeout);
-  textEl.textContent = fullText;
-
   const page1 = document.getElementById('page1');
   const page2 = document.getElementById('page2');
   const card = document.getElementById('floatingCard');
@@ -178,42 +180,43 @@ function showSecondScreen() {
   page1.classList.add('hidden');
   page2.classList.add('visible');
 
-  // 等待页面渲染再触发动画
-  requestAnimationFrame(() => {
-    card.style.transform = 'translateX(-50%) translateY(0)';
-    card.style.opacity = '1';
-    icons.forEach((icon, i) => {
-      icon.style.transitionDelay = (i * 0.2) + 's';
-      icon.style.opacity = '1';
-      icon.style.transform = 'translateY(0) scale(1)';
-    });
+  // 卡片浮现
+  card.style.transform = 'translateX(-50%) translateY(50px)';
+  card.style.opacity = '0';
+  void card.offsetWidth;
+  card.style.transform = 'translateX(-50%) translateY(0)';
+  card.style.opacity = '1';
+
+  // ICON 一个一个弹出
+  icons.forEach((icon,i)=>{
+    icon.style.transitionDelay = (i*0.2)+'s';
+    icon.style.opacity = '1';
+    icon.style.transform = 'translateY(0) scale(1)';
   });
 }
 
-window.onload = () => typeWriter();
+window.onload = ()=>typeWriter();
 
-// 点击跳过第一屏
-document.getElementById('page1').addEventListener('click', showSecondScreen);
+/* 点击跳过第一屏 */
+document.getElementById('page1').addEventListener('click',showSecondScreen);
 
-// 鼠标红点
+/* 鼠标小红点 */
 document.addEventListener('mousemove', e => {
   document.querySelector('.cursor').style.transform =
     `translate(${e.clientX}px, ${e.clientY}px)`;
 });
 
-// Seattle 时间
-function updateSeattleTime() {
-  const time = new Date().toLocaleString("en-US", {
-    timeZone: "America/Los_Angeles",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true
+/* Seattle 时间 */
+function updateSeattleTime(){
+  const time = new Date().toLocaleString("en-US",{
+    timeZone:"America/Los_Angeles",
+    hour:"numeric",minute:"2-digit",hour12:true
   });
   const el = document.getElementById('seattle-time');
-  if (el) el.textContent = time + ' Seattle';
+  if(el) el.textContent = time + ' Seattle';
 }
 updateSeattleTime();
-setInterval(updateSeattleTime, 60000);
+setInterval(updateSeattleTime,1000);
 </script>
 
 </body>
